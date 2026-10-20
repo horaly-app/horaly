@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#07030f">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Horaly Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#07030f;--mag:#ff2bd6;--vio:#8b5cf6;--tx:#f4eefe;--mut:#b7a9d6;--ok:#34e0a1;--warn:#ffb454;--capH:clamp(140px,25vh,210px);--ph:min(calc(100dvh - var(--capH) - 118px),640px,122vw);--pw:calc(var(--ph)*.49);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;height:100dvh;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;overscroll-behavior:none;touch-action:manipulation;margin:0;background:var(--bg);color:var(--tx);font-family:'Plus Jakarta Sans',system-ui,sans-serif;overflow:hidden}
+#stage{position:relative;height:100%;cursor:pointer;background:radial-gradient(circle at 0 0,rgba(255,43,214,.38),transparent 34%),radial-gradient(circle at 100% 100%,rgba(255,43,214,.34),transparent 36%),radial-gradient(ellipse at 50% 40%,#2a0f4d 0%,#12062a 45%,#07030f 82%)}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+#bar{position:absolute;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--vio),var(--mag));transition:width .5s;z-index:9;box-shadow:0 0 12px var(--mag)}
+#sec{position:absolute;top:12px;left:20px;max-width:calc(100vw - 170px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--mut);z-index:5}
+#hint{position:absolute;top:12px;right:20px;font-size:11px;color:var(--mut);opacity:.8;z-index:5;animation:bl 2.4s infinite}
+#foot{position:absolute;bottom:18px;left:0;right:0;display:none;justify-content:center;z-index:5;pointer-events:none}
+[data-m=ph] #foot,[data-m=sim] #foot,[data-m=brain] #foot{display:flex}
+#foot .logo{width:112px;filter:drop-shadow(0 0 8px var(--mag))}
+@keyframes bl{50%{opacity:.25}}
+/* intro */
+#intro{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center}
+[data-m=intro] #intro,[data-m=end] #intro{display:flex}
+#intro>*{opacity:0;animation:up 1s forwards;max-width:min(680px,92vw);margin:0}
+@keyframes up{from{opacity:0;transform:translateY(14px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+h1{font-weight:800;font-size:clamp(30px,5.4vw,58px);line-height:1.08;letter-spacing:-.02em}
+.p1{font-size:clamp(18px,2.4vw,26px);font-weight:600;color:#e6d4ff}
+.p{font-size:clamp(15px,1.7vw,19px);color:var(--mut);line-height:1.6;font-weight:300}
+.say{font-size:clamp(15px,1.8vw,20px);line-height:1.55;padding:14px 20px;border-radius:18px 18px 18px 4px;background:rgba(139,92,246,.16);border:1px solid rgba(255,43,214,.35);box-shadow:0 0 30px rgba(255,43,214,.15)}
+.logo{width:min(400px,78vw);height:auto;filter:drop-shadow(0 0 18px var(--mag)) drop-shadow(0 0 44px rgba(139,92,246,.6))}
+.wm{font-weight:800;font-size:22px;letter-spacing:.04em;color:#fff}
+.star{width:70px;height:70px;animation:up 1s forwards,pulse 2.4s 1s infinite}
+@keyframes pulse{50%{transform:scale(1.25);filter:drop-shadow(0 0 24px var(--mag))}}
+.btn{pointer-events:auto;font:600 14px 'Plus Jakarta Sans',sans-serif;color:#fff;border:0;border-radius:99px;padding:12px 24px;background:linear-gradient(90deg,var(--vio),var(--mag));cursor:pointer;box-shadow:0 0 24px rgba(255,43,214,.45)}
+.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{text-decoration:none;display:inline-block}
+.btn.alt{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.35);box-shadow:none;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.nav{position:absolute;bottom:10px;width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;z-index:6;cursor:pointer;color:#fff;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .3s,transform .2s}
+.nav:active{transform:scale(.9)}.nav.off{opacity:0;pointer-events:none}
+#prev{left:16px}#next{right:16px}
+.nav svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fl{position:absolute;font-size:12px;padding:7px 12px;border-radius:10px;background:rgba(139,92,246,.2);border:1px solid rgba(255,43,214,.3);color:#e9dcff;animation:fl 7s ease-in-out infinite alternate;z-index:0}
+@keyframes fl{to{transform:translate(18px,-26px)}}
+/* phone */
+#pw{position:absolute;top:calc(44px + var(--capH));left:50%;width:var(--pw);height:var(--ph);margin-left:calc(var(--pw)/-2);perspective:1200px;opacity:0;transition:opacity .8s,transform .8s,filter .8s;pointer-events:none}
+[data-m=ph] #pw,[data-m=sim] #pw{opacity:1}
+[data-m=brain] #pw{opacity:.18;filter:blur(2px);transform:scale(.8)}
+[data-m=brain].burst #pw{opacity:1;filter:none;transform:none}
+#phone{position:absolute;inset:0;border-radius:calc(var(--pw)*.14);padding:calc(var(--pw)*.034);box-sizing:border-box;background:linear-gradient(145deg,#2b1747,#0c0618);box-shadow:0 0 0 1.5px #ff2bd677,0 0 60px rgba(255,43,214,.35),0 30px 80px #000;transform-style:preserve-3d}
+#phone.enter{animation:ent 2.2s cubic-bezier(.2,.8,.2,1)}
+@keyframes ent{from{transform:rotateY(-80deg) rotateX(14deg) scale(.5);opacity:0}60%{transform:rotateY(18deg)}to{transform:none;opacity:1}}
+#scr{box-sizing:border-box;position:relative;height:100%;border-radius:calc(var(--pw)*.106);background:linear-gradient(180deg,#0e0a1c,#070411);overflow:hidden;padding:calc(var(--pw)*.07) calc(var(--pw)*.06) 0;font-size:calc(var(--pw)*.05)}
+#phone::before{content:'';position:absolute;top:calc(var(--pw)*.05);left:50%;width:28%;height:calc(var(--pw)*.056);margin-left:-15%;background:#000;border-radius:99px;z-index:3}
+#pw::before{content:'';position:absolute;left:-26%;right:-26%;bottom:-2.5%;height:7%;border-radius:50%;border:2px solid #ff5ae6;box-shadow:0 0 26px #ff2bd6,inset 0 0 26px #ff2bd6}
+#sb{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.9em;padding:0 calc(var(--pw)*.03);margin-bottom:calc(var(--pw)*.065)}
+#sb i{display:inline-block;width:1.5em;height:.7em;border:1.5px solid #fff;border-radius:3px;position:relative;margin-left:6px;vertical-align:middle}#sb i::after{content:'';position:absolute;inset:1.5px;background:#fff;border-radius:1px}
+#tb{position:absolute;left:0;right:0;bottom:0;height:4.4em;display:flex;justify-content:space-around;align-items:center;padding:0 calc(var(--pw)*.07) .3em;box-sizing:border-box;background:rgba(10,6,20,.97);border-top:1px solid rgba(255,255,255,.07);font-size:.72em;color:#b9b0cf}
+#tb div{display:flex;flex-direction:column;align-items:center;gap:3px}#tb .on{color:#ff2bd6}
+#tb svg{width:2em;height:2em;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#app h4{margin:0 0 10px;font-size:1.2em;font-weight:800}
+#app>div{animation:fi .5s}
+@keyframes fi{from{opacity:0}}
+.row{position:relative;display:grid;grid-template-columns:3.3em 1fr auto;gap:8px;align-items:center;padding:10px 12px;margin-bottom:9px;border-radius:12px;background:#10101c;border:1px solid rgba(255,255,255,.05);transition:all .5s}
+.row b{color:#f1ecff;font-weight:600}
+.row b::after{content:'';display:block;width:8px;height:8px;border-radius:50%;background:#38d6f2;margin-top:7px}
+.row span{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row small{display:block;color:#cdc4e4;font-size:.84em;font-weight:400;margin-top:2px}
+.row i{white-space:nowrap;font-style:normal;font-size:.78em;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(139,92,246,.25);color:#e2d4ff;border:1px solid rgba(139,92,246,.5)}
+.row.ok{box-shadow:0 0 0 1px rgba(47,227,181,.55)}.row.ok i{background:rgba(47,227,181,.14);color:#2fe3b5;border-color:rgba(47,227,181,.6)}
+.row.warn i{background:rgba(255,180,84,.16);color:var(--warn);border-color:rgba(255,180,84,.6)}
+.row.risk{background:linear-gradient(90deg,#9a1236,#5c0b25);box-shadow:0 0 18px rgba(255,43,74,.35)}.row.risk i{background:#ff2b4a;color:#fff;border-color:#ff2b4a}
+.row.hl{background:linear-gradient(90deg,#d9139f,#7b1bd8);border-color:#ff9cf0;box-shadow:0 0 0 1.5px var(--mag),0 0 22px rgba(255,43,214,.6);animation:gl 1.6s infinite alternate}
+.row.hl b::after{background:#fff}.row.hl small{color:#fff}.row.hl i{background:rgba(0,0,0,.25);color:#fff;border-color:rgba(255,255,255,.5)}
+.row.hl::after{content:'⚡';position:absolute;top:-9px;right:-5px;width:1.7em;height:1.7em;border-radius:50%;background:#ff2bd6;display:grid;place-items:center;box-shadow:0 0 12px #ff2bd6;font-size:.9em}
+@keyframes gl{to{box-shadow:0 0 0 1.5px var(--mag),0 0 8px rgba(255,43,214,.25)}}
+.row.free{border:1.5px dashed var(--mag);background:transparent}
+.map svg{width:100%;border-radius:14px;background:#120824}
+.svc{font-size:1.1em;padding:14px;border-radius:14px;background:rgba(255,255,255,.06)}
+.svc b{font-size:2em;display:block;color:var(--mag)}
+/* card */
+#card{position:absolute;top:calc(52px + var(--capH) + var(--ph)*.16);width:min(250px,calc(50vw - var(--pw)/2 + 70px));display:none;z-index:4;pointer-events:none}
+#card.R{left:calc(50% + var(--pw)/2 - 70px)}
+#card.L{right:calc(50% + var(--pw)/2 - 70px);--dx:90px}
+#card.L .cd{transform:perspective(900px) rotateY(9deg)}
+#card.L .cd::before{left:auto;right:-44px;background:linear-gradient(270deg,transparent,#ff2bd6)}
+[data-m=ph] #card,[data-m=sim] #card{display:block}
+.cd{position:relative;padding:16px 18px;border-radius:18px;background:linear-gradient(150deg,rgba(44,14,78,.88),rgba(16,6,34,.9));border:1.5px solid #ff2bd6;backdrop-filter:blur(14px);box-shadow:0 0 34px rgba(255,43,214,.45),inset 0 0 22px rgba(255,43,214,.18);animation:pop .45s cubic-bezier(.2,.9,.3,1.2);font-size:clamp(11.5px,3.1vw,13.5px);line-height:1.45;transform:perspective(900px) rotateY(-9deg)}
+.cd::before{content:'';position:absolute;left:-44px;top:50%;width:44px;height:2px;background:linear-gradient(90deg,transparent,#ff2bd6);box-shadow:0 0 10px #ff2bd6}
+.cd,#chips span{background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,160,240,.09) 40%,rgba(139,92,246,.14));border:1px solid rgba(255,255,255,.34);-webkit-backdrop-filter:blur(16px) saturate(190%) brightness(1.12);backdrop-filter:blur(16px) saturate(190%) brightness(1.12);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.12),inset 0 0 28px rgba(255,255,255,.1),0 14px 40px rgba(0,0,0,.45),0 0 34px rgba(255,43,214,.28)}
+.cd::after,#chips span::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 70% at 18% 0%,rgba(255,255,255,.38),transparent 55%),linear-gradient(115deg,transparent 60%,rgba(255,255,255,.14))}
+.cd{border-radius:24px;text-shadow:0 1px 8px rgba(20,0,40,.45)}
+.l{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14)}.l.me{background:rgba(255,43,214,.28)}
+.hd{display:flex;gap:12px;align-items:center;font-weight:800;font-size:17px;line-height:1.2}
+.hd svg{width:32px;height:32px;flex:none;stroke:#ff2bd6;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px #ff2bd6)}
+@keyframes pop{from{opacity:0;transform:translateX(var(--dx,-90px)) scale(.5)}}
+.cd>*{margin:0 0 9px;opacity:0;animation:up .35s forwards}
+.cd>:last-child{margin:0}
+.l{padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.08)}
+.l.me{background:rgba(255,43,214,.22)}
+.big{font-weight:700;font-size:1.15em;line-height:1.3}
+.rec{color:#fff;background:linear-gradient(90deg,var(--vio),var(--mag));padding:7px 12px;border-radius:10px;font-weight:600;font-size:.92em;display:inline-block}
+.okb{color:var(--ok);font-weight:800}
+.bar{height:9px;border-radius:9px;background:linear-gradient(90deg,var(--vio),var(--mag));transition:width 1s}
+.cd button{pointer-events:auto;font:600 13px inherit;font-family:inherit;color:#fff;background:var(--vio);border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
+.rain{height:34px;border-radius:8px;background:repeating-linear-gradient(105deg,transparent 0 8px,rgba(180,190,255,.55) 8px 9px);background-size:20px 20px;animation:rn .5s linear infinite}
+@keyframes rn{to{background-position:-10px 20px}}
+.chips span{display:inline-block;margin:0 6px 6px 0;padding:6px 10px;border-radius:99px;border:1px solid var(--mag);font-size:.9em}
+/* caption */
+#cap{position:absolute;left:50%;top:0;height:calc(44px + var(--capH));box-sizing:border-box;padding-top:26px;transform:translateX(-50%);width:min(560px,92vw);flex-direction:column;justify-content:center;text-align:center;z-index:5;display:none;pointer-events:none}
+[data-m=ph] #cap,[data-m=sim] #cap,[data-m=brain] #cap{display:flex}
+#cap h2{margin:0 0 8px;font-size:clamp(18px,5vw,28px);font-weight:800;letter-spacing:-.01em;animation:up .7s}
+#cap p{margin:0;color:#e3d6ff;font-size:clamp(12.5px,3.5vw,16px);line-height:1.5;animation:up .8s .15s both}
+#sim{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:11px;color:var(--mut);display:none}
+[data-m=ph] #sim,[data-m=sim] #sim{display:block}
+/* brain */
+#brain{position:absolute;inset:calc(44px + var(--capH)) 0 64px 0;display:none;align-items:center;justify-content:center;transition:all 1s}
+[data-m=brain] #brain{display:flex}
+[data-m=brain].burst #brain{opacity:0;transform:scale(2.4);pointer-events:none}
+#brain svg{width:min(640px,98vw);max-height:100%;overflow:visible}
+.flow{stroke-dasharray:4 10;animation:fw 1s linear infinite}
+@keyframes fw{to{stroke-dashoffset:-14}}
+#brain .core{animation:pulse 1.2s infinite;transform-origin:270px 200px}
+#status{position:absolute;bottom:2%;font-size:15px;color:#ffd3f6;text-shadow:0 0 14px var(--mag)}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,#fff 0,var(--mag) 18%,transparent 60%);opacity:0;pointer-events:none;z-index:8}
+.burst #flash{animation:fs 1.4s}
+@keyframes fs{20%{opacity:1}to{opacity:0}}
+#chips{position:absolute;left:0;right:0;top:calc(44px + var(--capH));height:var(--ph);pointer-events:none;display:none}
+.burst #chips{display:block}
+#chips span{position:absolute;width:min(190px,calc(50vw - var(--pw)/2 + 70px));text-align:center;padding:10px 12px;border-radius:14px;font-size:clamp(11.5px,3.1vw,13.5px);font-weight:600;background:rgba(139,92,246,.3);border:1px solid var(--mag);backdrop-filter:blur(10px);box-shadow:0 0 30px rgba(255,43,214,.4);animation:pop 1s backwards}
+@media(max-width:760px){
+.cd{padding:10px 12px}.cd::before{display:none}
+.hd svg{width:26px;height:26px}.l{padding:6px 9px}.rec{padding:5px 9px}
+}
+@supports not (height:100dvh){:root{--ph:min(calc(100vh - var(--capH) - 118px),640px,122vw)}}
+@media(orientation:landscape) and (max-height:480px){#stage::after{content:'Gire o aparelho para a vertical para ver a experiência.';position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px;background:#07030fee;z-index:20;font-size:15px;pointer-events:none}}
+/* Mantém a sequência narrativa legível mesmo com Reduzir Movimento ativo.
+   Somente movimentos decorativos contínuos são desativados. */
+@media(prefers-reduced-motion:reduce){
+ .fl,.star,.row.hl,.rain,.flow,#brain .core{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div id="stage" data-m="intro">
+<canvas id="cv"></canvas><div id="bar"></div><div id="sec"></div>
+<div id="intro"></div>
+<div id="brain"><svg id="bsvg" viewBox="0 0 540 400"></svg><div id="status"></div></div>
+<div id="pw"><div id="phone"><div id="scr"><div id="sb"><span>9:41</span><span>5G<i></i></span></div><div id="app"></div><div id="tb"></div></div></div></div>
+<div id="card"></div><div id="chips"></div><div id="flash"></div>
+<div id="cap"></div>
+<button class="nav" id="prev" aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="nav" id="next" aria-label="Avançar"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+<div id="foot"></div>
+<div id="hint">Toque para continuar</div>
+</div>
+<script>
+const $=s=>document.querySelector(s),stage=$('#stage'),scr=$('#scr'),card=$('#card'),cap=$('#cap'),intro=$('#intro'),phone=$('#phone');
+const SITE_URL='https://diegobmenezes.github.io/horaly/index.html';
+let i=0,st=0,T=[],prev='intro';
+const later=(f,ms)=>T.push(setTimeout(f,ms));
+/* dados */
+const base=()=>[['09h00','Camila','Limpeza de pele','',''],['11h00','Vanessa','Peeling','',''],['14h30','Bruna','Hidratação','',''],['16h00','Marcos','Massagem','','']];
+const A=(o={},h='Agenda de Patrícia')=>({h,rows:base().map((r,k)=>o[k]?r.map((v,j)=>o[k][j]??v):r)});
+const W=['Larissa · Peeling','Júlia · Limpeza de pele','Renata · Hidratação'];
+const LOGO='<svg class="logo" role="img" aria-label="Horaly" viewBox="0 0 768 161" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M283.866 116.273C289.648 116.37 293.511 122.952 290.329 128.051C289.263 129.757 287.113 131.8 285.684 133.338L277.824 141.771L267.307 153.013C263.69 156.863 258.944 164.05 252.877 158.856C251.408 157.598 249.939 155.752 248.64 154.295C245.64 151.106 240.19 146.662 240.105 142.146C240.084 139.882 240.968 137.705 242.559 136.095C246.105 132.46 251.46 132.702 254.647 136.574C255.676 137.823 256.948 139.101 258.097 140.241L271.923 125.272C275.211 121.711 278.091 117.381 282.95 116.301C283.255 116.28 283.56 116.27 283.866 116.273ZM233.921 101.99C235.773 101.731 244.85 101.855 246.638 102.003C256.172 102.791 266.991 106.735 273.315 114.2C268.346 119.188 263.008 125.33 258.148 130.554C244.763 118.293 225.589 137.416 236.95 151.345L238.301 152.857C225.476 152.995 212.347 152.859 199.511 152.778C196.232 152.757 193.085 149.651 193.071 146.281C193.028 135.7 197.825 124.641 204.578 116.606C212.35 107.471 222.231 102.916 233.921 101.99ZM141.063 0.480469C142.422 0.289266 146.635 0.307049 148.004 0.359375C160.048 0.876543 171.826 4.06311 182.487 9.69043C198.054 18.0111 211.13 32.6484 216.32 49.6582C210.082 55.5899 206.42 63.7327 206.119 72.3369C205.779 82.0334 209.406 89.6766 215.886 96.6299C215.534 97.9862 215.024 99.3449 214.558 100.67C200.628 108.478 191.561 120.619 188.02 136.263C182.637 140.583 174.294 144.735 167.867 147.125C154.626 152.049 138.416 152.607 124.73 149.094C105.476 144.189 88.9739 131.804 78.8828 114.685C86.2407 114.647 90.4188 113.74 94.9268 107.391C96.0699 108.836 97.0694 110.343 98.292 111.837C102.177 116.586 105.963 119.968 110.946 123.451C111.196 123.618 111.446 123.784 111.697 123.947C124.407 132.3 139.921 135.242 154.805 132.122C169.974 128.875 183.288 119.224 191.666 106.239C200.51 92.4767 203.487 75.7498 199.939 59.7793C196.907 45.8747 188.122 34.1736 176.198 26.5654C163.161 18.2834 147.339 15.6 132.301 19.1201C116.311 22.7137 103.566 32.793 94.918 46.5098C89.4471 40.6949 86.2437 40.8937 78.7646 40.9268C81.5024 35.868 83.8218 32.3251 87.6055 27.877C101.066 11.988 120.308 2.12658 141.063 0.480469ZM47.4785 93.1504C57.3651 92.7902 67.5538 93.311 77.4707 93.0771C78.8672 93.1907 80.7536 92.9109 82.1084 93.2197C88.012 94.5652 90.1055 101.323 85.9717 105.495C84.9529 106.517 83.6618 107.226 82.2529 107.536C80.1995 108.006 67.9734 107.782 64.8975 107.773L41.8652 107.761C39.3036 107.761 32.4191 107.905 30.2861 107.564C29.0113 107.366 27.8204 106.803 26.8584 105.943C25.4473 104.672 24.6076 102.885 24.5293 100.987C24.4647 99.0542 25.164 97.1735 26.4756 95.752C29.4777 92.5583 33.7945 93.2301 37.7627 93.2031C41.0095 93.1809 44.2274 93.2251 47.4785 93.1504ZM137.378 34.2627C147.93 33.1692 146.306 44.0666 146.3 50.9551L146.279 71.0645C152.097 74.7391 157.94 78.3705 163.809 81.959C165.82 83.1933 171.449 86.4839 173.073 87.8809C174.084 88.7403 174.87 89.8324 175.363 91.0635C176.142 93.0524 176.095 95.2705 175.229 97.2236C174.085 99.8238 172.185 101.218 169.616 102.187C164.365 102.891 161.871 100.381 157.621 97.7148L146.897 90.9912L138.402 85.6787C136.853 84.7123 135.161 83.7049 133.692 82.6465C132.895 82.0086 131.681 80.6214 131.417 79.6338C130.92 77.773 130.955 75.6832 130.955 73.7783C130.955 65.195 130.96 56.612 130.983 48.0293C130.99 45.6228 130.923 43.189 131.152 40.7939C131.248 39.7986 131.642 38.8645 132.138 38.0059C133.37 35.915 135.084 34.8892 137.378 34.2627ZM236.925 47.2871C251.266 46.381 263.637 57.2516 264.589 71.5938C265.539 85.9355 254.71 98.3442 240.375 99.3398C225.975 100.34 213.504 89.4502 212.548 75.0449C211.594 60.6394 222.519 48.1975 236.925 47.2871ZM62.1982 70.4404C64.6807 70.4363 73.8599 70.2707 75.9131 70.6318C77.2433 70.8683 78.473 71.498 79.4424 72.4395C80.7775 73.7315 81.817 75.8151 81.8389 77.7031C81.8425 79.6992 81.0541 81.6154 79.6465 83.0303C76.6161 86.1008 71.0706 85.2625 66.9688 85.2656L49.208 85.2666L19.9668 85.2793C15.3741 85.2824 10.1965 85.4493 5.62402 85.0811C4.53815 84.9934 3.3828 84.3714 2.54688 83.6611C1.07279 82.4056 0.16083 80.6128 0.0146484 78.6816C-0.111409 76.7716 0.542447 74.8915 1.82617 73.4717C2.67134 72.5215 4.74171 71.1021 5.96484 71.0146C14.474 70.4092 24.1135 70.9784 32.5605 70.5225L62.1982 70.4404ZM74.1396 47.748C78.0113 47.8448 82.3312 46.9149 85.2598 49.707C86.6519 51.0288 87.4632 52.8485 87.5166 54.7676C87.5685 56.7804 86.806 58.7298 85.4014 60.1719C82.7749 62.8578 79.6751 62.3703 76.249 62.4053C73.9741 62.4285 71.6919 62.4037 69.417 62.4043L41.8125 62.4102C36.3674 62.4674 27.6109 63.8498 26.709 56.2891C26.4929 54.3663 27.0705 52.4389 28.3086 50.9521C29.3468 49.6977 30.7583 48.8073 32.3379 48.4121C34.6571 47.8525 40.0781 48.0167 42.6836 47.9961L59.0391 47.8447C62.7853 47.8194 70.2759 47.8448 74.1396 47.748Z" fill="white"/><path d="M421.185 59.2104V15.7224H437.821V117H421.185V75.2631H367.481V117H350.699V15.7224H367.481V59.2104H421.185ZM482.391 43.1578C503.114 43.1578 520.042 59.9401 520.042 80.8086C520.042 101.677 503.114 118.459 482.391 118.459C461.523 118.459 444.74 101.677 444.74 80.8086C444.74 59.9401 461.523 43.1578 482.391 43.1578ZM482.391 102.407C493.92 102.407 503.26 92.7751 503.26 80.8086C503.26 68.842 493.92 59.2104 482.391 59.2104C470.863 59.2104 461.523 68.842 461.523 80.8086C461.523 92.7751 470.863 102.407 482.391 102.407ZM525.135 80.8086C525.135 60.086 541.917 43.1578 562.64 43.1578C569.644 43.1578 576.066 45.0549 581.757 48.2655L573.585 62.421C570.374 60.3779 566.726 59.2104 562.64 59.2104C551.111 59.2104 541.771 68.842 541.771 80.8086V117H525.135V80.8086ZM651.296 95.8397C651.296 98.6124 653.485 100.801 656.258 100.801H657.863V116.854H655.674C649.107 116.854 642.978 113.935 638.892 108.682C632.325 114.811 623.423 118.459 613.646 118.459C592.777 118.459 575.995 101.677 575.995 80.8086C575.995 59.9401 592.777 43.1578 613.646 43.1578C621.38 43.1578 628.531 45.4927 634.514 49.4329V43.8875H651.296V95.8397ZM613.646 102.407C625.174 102.407 634.514 92.7751 634.514 80.8086C634.514 68.842 625.174 59.2104 613.646 59.2104C602.117 59.2104 592.777 68.842 592.777 80.8086C592.777 92.7751 602.117 102.407 613.646 102.407ZM678.73 95.9856C678.73 98.7583 680.919 100.947 683.691 100.947H685.297V117H682.962C671.433 117 661.947 107.66 661.947 95.9856V15.7224H678.73V95.9856ZM764.754 43.8875V116.562C764.754 137.285 747.971 154.213 727.103 154.213C706.38 154.213 689.452 137.285 689.452 116.562H706.235C706.235 128.529 715.574 138.16 727.103 138.16C738.632 138.16 748.117 128.529 748.117 116.562V112.184C742.134 116.124 734.837 118.459 727.103 118.459C706.38 118.459 689.452 101.677 689.452 80.8086V43.8875H706.235V80.8086C706.235 92.7751 715.574 102.407 727.103 102.407C738.632 102.407 748.117 92.7751 748.117 80.8086V43.8875H764.754Z" fill="white"/></svg>';
+const STAR='<svg class="star" viewBox="0 0 100 100"><path d="M50 8 58 42 92 50 58 58 50 92 42 58 8 50 42 42Z" fill="#ff2bd6"/></svg>';
+const S=[
+{m:'intro',L:[['',LOGO],['p1','Sua agenda inteligente, trabalhando por você.'],['p','Uma nova maneira de organizar seus atendimentos, antecipar imprevistos e aproveitar melhor cada oportunidade.'],['b','<div class="btns"><button class="btn" id="go">Ver a experiência</button><a class="btn alt" id="site" href="'+SITE_URL+'" target="_blank" rel="noopener">Ver site da empresa</a></div>']]},
+{m:'intro',bg:1,L:[['h1','Muito mais do que marcar horários.'],['p','A Horaly é uma plataforma de agendamentos com inteligência artificial, desenvolvida para ajudar profissionais a organizar sua rotina, reduzir faltas e aproveitar melhor o tempo disponível.']]},
+{m:'intro',L:[['',STAR],['h1','Imagine ter uma assistente cuidando da sua agenda.'],['say','Olá! Eu sou a inteligência artificial da Horaly. Ajudo você a organizar atendimentos, antecipar imprevistos e automatizar tarefas.'],['say','Você continua no controle: eu sigo as suas orientações.'],['p1','Deixe-me mostrar o que posso fazer.']]},
+{m:'ph',sec:'Conheça minhas ferramentas',t:'Bem-vindo à minha inteligência.',h:'Vou mostrar como posso ajudar você em cada detalhe da sua rotina.',app:A()},
+{m:'ph',t:'Confirmações inteligentes.',h:'Vou confirmar os atendimentos com seus clientes e acompanhar as respostas. Assim, você não precisa verificar cada confirmação manualmente.',app:A({2:{3:'Pendente',4:'hl'}}),card:{l:[['Horaly → Bruna: Oi, Bruna! Confirma seu horário às 14h30?'],['Bruna: Confirmado! Até lá 💜','me']],ok:'Status: Confirmado'},after:[3400,A({2:{3:'Confirmado',4:'ok'}})]},
+{m:'ph',t:'Histórico inteligente.',h:'Vou acompanhar o histórico dos seus clientes para reconhecer padrões de pontualidade, cancelamentos e comparecimento. Assim, posso ajudar você a tomar decisões mais informadas.',app:{h:'Perfil · Marcos',rows:[['12/09','Atraso','18 min','Atrasou','warn'],['28/08','Atraso','22 min','Atrasou','warn'],['14/08','Compareceu','No horário','Ok','ok'],['31/07','Atraso','20 min','Atrasou','warn']]},card:{l:[['12/09 · 28/08 · 14/08 · 31/07']],big:'Atraso médio: 20 minutos'}},
+{m:'ph',t:'Previsão de faltas.',h:'Vou analisar o histórico de agendamentos para identificar quando um cliente apresenta maior risco de faltar ou cancelar. Assim, posso recomendar uma confirmação antecipada.',app:A({3:{3:'Risco de falta',4:'risk'}}),card:{big:'Maior risco de ausência identificado.',rec:'Antecipar confirmação.',l:[['É uma análise preventiva, não uma certeza.']]}},
+{m:'ph',t:'Monitoramento do clima.',h:'Vou acompanhar a previsão do tempo e identificar condições que possam afetar seus atendimentos. Se houver previsão de chuva forte, posso ajudar você a se antecipar.',app:A({2:{4:'warn',3:'Tarde'},3:{4:'warn',3:'Tarde'}}),card:{rain:1,big:'Chuva intensa prevista para a tarde.',l:[['Podem ser afetados: 14h30 Bruna e 16h00 Marcos']]}},
+{m:'ph',t:'Monitoramento do trânsito.',h:'Vou acompanhar as condições de trânsito disponíveis para identificar possíveis atrasos e ajudar a enviar lembretes no momento mais adequado.',app:{h:'Rota até o atendimento',map:1},card:{big:'Trânsito intenso identificado na região.',rec:'Lembrete antecipado sugerido'}},
+{m:'ph',t:'Duração inteligente dos serviços.',h:'Vou ajudar você a acompanhar quanto tempo cada profissional leva para realizar seus serviços. Com essas informações, posso sugerir durações mais adequadas e ajudar a evitar conflitos na agenda.',app:{h:'Serviço',svc:1},card:{bars:[['Prevista: 60 min',60],['Observada: 75 min',75]],big:'Duração média observada: 75 minutos.',rec:'Ajustar a duração configurada'}},
+{m:'ph',t:'Lembretes personalizados.',h:'Vou ajudar a enviar lembretes no momento mais adequado para cada atendimento, considerando suas configurações e as informações disponíveis sobre os clientes.',app:{h:'Lembretes · Bruna',rows:[['Ontem','Lembrete 1','18h00','Enviado','ok'],['Hoje','Lembrete 2','12h30','Agendado','hl'],['Hoje','Atendimento','14h30','Futuro','']]},card:{l:[['Oi, Bruna! Hoje às 14h30 tem horário com a Patrícia. Te esperamos!','me']],ok:'Enviado'}},
+{m:'ph',t:'Lista de espera inteligente.',h:'Vou organizar os clientes interessados em novos horários e procurar oportunidades compatíveis com suas preferências. Quando surgir uma vaga, posso oferecer o encaixe automaticamente.',app:{h:'Lista de espera',rows:[['1º',W[0].split(' · ')[0],'Peeling','Tarde',''],['2º',W[1].split(' · ')[0],'Limpeza de pele','Manhã',''],['3º',W[2].split(' · ')[0],'Hidratação','Tarde','']]},card:{l:[['Vaga às 16h'],['Larissa tem preferência pela tarde. Compatível.','me']],big:'Cliente compatível encontrada.'}},
+{m:'ph',t:'Recuperação automática de horários.',h:'Quando um horário for liberado, posso procurar outro cliente disponível, oferecer a vaga e atualizar sua agenda automaticamente, seguindo as regras que você definir.',app:A({2:{3:'Cancelado',4:'free'}}),card:{l:[['Vaga liberada às 14h30'],['Oferta enviada para Larissa'],['Larissa aceitou','me']],ok:'Horário recuperado.'},after:[3600,A({2:{1:'Larissa',2:'Peeling',3:'Confirmado',4:'ok'}})]},
+{m:'ph',t:'Otimização inteligente.',h:'Vou analisar seus horários, a duração dos serviços e a disponibilidade da equipe para encontrar oportunidades de melhorar a organização da sua agenda.',app:A({0:{3:'15 min livre'},1:{3:'Conflito',4:'warn'}}),card:{l:[['Atual: 3 intervalos soltos de 15 min'],['Sugestão: 1 intervalo de 45 min','me']],rec:'Sugestão de ajuste'}},
+{m:'brain',sec:'Todas as ferramentas, uma inteligência',steps:[0,1]},
+{m:'ph',sec:'Veja o que eu descobri',t:'Identifiquei um possível conflito na agenda.',h:'Patrícia, percebi que Bruna está agendada para as 14h30, mas o atendimento de Vanessa, marcado anteriormente, costuma demorar mais do que o tempo previsto.',app:A({1:{3:'60 → 75 min',4:'warn'},2:{3:'Espera ~15 min',4:'hl'}}),card:{l:[['Pelo histórico, Bruna pode precisar esperar aproximadamente 15 minutos.']],big:'Quer que eu ajude a ajustar esses horários?',btn:['Ver proposta de reorganização',A({1:{3:'11h00',4:'ok'},2:{0:'14h45',3:'Reajustado',4:'ok'}})]}},
+{m:'ph',t:'Encontrei um padrão de atraso.',h:'Patrícia, observei que Marcos costuma chegar cerca de 20 minutos depois do horário marcado.',app:{h:'Histórico · Marcos',rows:[['12/09','Atraso','18 min','Atrasou','warn'],['28/08','Atraso','22 min','Atrasou','warn'],['31/07','Atraso','20 min','Atrasou','warn']]},card:{l:[['Posso antecipar a confirmação do próximo atendimento para ajudar a reduzir esse risco.'],['Oi, Marcos! Podemos confirmar seu horário de amanhã?','me']],rec:'Mensagem preparada'}},
+{m:'ph',t:'Um imprevisto que podemos antecipar.',h:'Patrícia, há previsão de chuva intensa para esta tarde e o trânsito na região pode ficar mais lento. Encontrei agendamentos que podem precisar de atenção.',app:A({2:{3:'Atenção',4:'warn'},3:{3:'Atenção',4:'warn'}}),card:{rain:1,l:[['Posso reforçar as confirmações e ajudar seus clientes a se organizarem com antecedência.']],big:'2 agendamentos para acompanhar'}},
+{m:'ph',t:'Encontrei uma oportunidade de encaixe.',h:'Patrícia, um horário ficou disponível às 16h. Encontrei uma cliente na lista de espera que procura esse serviço e tem disponibilidade nesse período.',app:A({3:{1:'Horário vago',2:'Larissa na lista',3:'Disponível',4:'free'}}),card:{l:[['Larissa conectada à vaga das 16h'],['Posso oferecer essa vaga e atualizar sua agenda assim que a cliente confirmar.']],rec:'Oferecer vaga'}},
+{m:'ph',t:'Sua agenda pode funcionar ainda melhor.',h:'Patrícia, identifiquei pequenos intervalos entre alguns atendimentos. Dependendo da duração dos serviços, podemos aproveitar melhor esses períodos.',app:A({0:{3:'Atual'},1:{3:'Atual'}}),card:{bars:[['Ocupação atual',64],['Com a sugestão',82]],l:[['Preparei uma alternativa para você avaliar. Nenhuma alteração precisa ser feita sem sua autorização.']]}},
+{m:'sim',sec:'Veja a Horaly agir na prática',steps:[
+{t:'Veja a Horaly agir na prática.',h:'Agora vou mostrar como posso cuidar de um imprevisto por você.',app:A({2:{3:'Sem resposta',4:'hl'}})},
+{t:'Veja a Horaly agir na prática.',h:'Patrícia, este cliente ainda não confirmou o atendimento. Vou enviar uma última solicitação de confirmação.',app:A({2:{3:'Enviando…',4:'hl'}}),card:{l:[['Horaly: Oi! Você confirma seu horário das 14h30?']]}},
+{t:'Veja a Horaly agir na prática.',h:'O prazo de confirmação terminou. Conforme suas configurações, vou liberar esse horário.',app:A({2:{1:'Horário livre',2:'',3:'Liberado',4:'free'}}),card:{l:[['Prazo encerrado, regra aplicada: liberar horário']]}},
+{t:'Veja a Horaly agir na prática.',h:'Encontrei uma oportunidade. Vou consultar sua lista de espera.',app:A({2:{1:'Horário livre',2:'',3:'Liberado',4:'free'}}),card:{l:[['Analisando serviço, disponibilidade e duração…'],['Larissa: compatível','me']]}},
+{t:'Horário recuperado com sucesso.',h:'Pronto, Patrícia! Encontrei um cliente disponível, confirmei o novo agendamento e atualizei sua agenda. Você pode acompanhar tudo por aqui.',app:A({2:{1:'Larissa',2:'Peeling',3:'Confirmado',4:'ok'}}),card:{l:[['Oferta enviada para Larissa'],['Larissa aceitou','me']],ok:'Horário recuperado com sucesso.'},ms:4500},
+{t:'Você define as regras. Eu cuido da execução.',h:'Você decide o que posso fazer sozinha e o que precisa da sua aprovação. Todas as minhas ações ficam registradas para você acompanhar.',app:A({2:{1:'Larissa',2:'Peeling',3:'Confirmado',4:'ok'}}),card:{chips:['Recomendar','Solicitar aprovação','Executar automaticamente']}}]},
+{m:'end',L:[['h1','Obrigado por conhecer.'],['p1','Temos muito mais para construir.'],['p','Esta é apenas uma amostra do que estamos desenvolvendo para transformar a forma como profissionais organizam seu tempo e atendem seus clientes.']]},
+{m:'end',L:[['',LOGO],['p1','Sua agenda inteligente, trabalhando por você.'],['p','Clientes e dados fictícios, para demonstrar funcionalidades planejadas.'],['b','<button class="btn" id="rs">Reiniciar a experiência</button>']]}
+];
+const ic=p=>`<svg viewBox="0 0 24 24">${p}</svg>`;
+const IC={cloud:ic('<path d="M7 16h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9.5 3.5 3.5 0 0 0 7 16z"/><path d="M9 19l-1 2M13 19l-1 2M17 19l-1 2"/>'),car:ic('<path d="M4 16v-4l2-5h12l2 5v4zM4 12h16"/><circle cx="8" cy="14.2" r=".8"/><circle cx="16" cy="14.2" r=".8"/><path d="M5 16v2h3v-2M16 16v2h3v-2"/>'),user:ic('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'),users:ic('<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 5 6"/>'),timer:ic('<circle cx="12" cy="14" r="7"/><path d="M12 14v-3M9 3h6M12 3v4"/>'),bell:ic('<path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/>'),refresh:ic('<path d="M20 11a8 8 0 0 0-14-4L4 9M4 4v5h5M4 13a8 8 0 0 0 14 4l2-2M20 20v-5h-5"/>'),chart:ic('<path d="M5 20v-6M11 20V9M17 20v-8M22 20V4" stroke-width="2.6"/>'),check:ic('<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'),warn:ic('<path d="M12 3l10 18H2zM12 10v5M12 18v.5"/>'),cal:ic('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>'),dots:ic('<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>')};
+const ICN={4:'check',5:'user',6:'warn',7:'cloud',8:'car',9:'timer',10:'bell',11:'users',12:'refresh',13:'chart',15:'warn',16:'user',17:'cloud',18:'users',19:'chart'};
+$('#foot').innerHTML=LOGO;
+$('#tb').innerHTML=`<div class="on">${IC.cal}Agenda</div><div>${IC.user}Clientes</div><div>${IC.chart}Relatórios</div><div>${IC.dots}Mais</div>`;
+/* render */
+function appHTML(a){
+ if(a.map)return`<h4>${a.h}</h4><div class="map"><svg viewBox="0 0 200 220"><path d="M20 200C40 150 80 160 90 110S150 90 180 20" fill="none" stroke="#8b5cf6" stroke-width="5" stroke-linecap="round"/><path d="M90 110S150 90 180 20" fill="none" stroke="#ff4d6d" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 7"><animate attributeName="stroke-dashoffset" to="-20" dur=".8s" repeatCount="indefinite"/></path><circle cx="20" cy="200" r="7" fill="#fff"/><circle cx="180" cy="20" r="7" fill="#ff2bd6"/></svg></div>`;
+ if(a.svc)return`<h4>${a.h}</h4><div class="svc">Limpeza de pele<b>60 min</b>Duração prevista</div>`;
+ return`<h4>${a.h}</h4>`+a.rows.map(r=>`<div class="row ${r[4]}"><b>${r[0]}</b><span>${r[1]}<small>${r[2]}</small></span>${r[3]?`<i>${r[3]}</i>`:''}</div>`).join('');
+}
+const setApp=a=>{$('#app').innerHTML='<div>'+appHTML(a)+'</div>'};
+function setCap(t,h){cap.innerHTML=(t?`<h2>${t}</h2>`:'')+`<p>${h}</p>`}
+function setCard(c,t){
+ if(!c){card.innerHTML='';return}
+ let k=0,d=()=>`style="animation-delay:${.1+(k++)*.3}s"`,o='';
+ if(t)o+=`<div class="hd" ${d()}>${IC[ICN[i]]||''}</div>`;
+ if(c.rain)o+=`<div class="rain" ${d()}></div>`;
+ (c.l||[]).forEach(x=>o+=`<div class="l ${x[1]||''}" ${d()}>${x[0]}</div>`);
+ (c.bars||[]).forEach(b=>o+=`<div ${d()}>${b[0]}<div class="bar" style="width:${b[1]}%"></div></div>`);
+ if(c.big)o+=`<div class="big" ${d()}>${c.big}</div>`;
+ if(c.rec)o+=`<div ${d()}><span class="rec">${c.rec}</span></div>`;
+ if(c.ok)o+=`<div class="okb" ${d()}>✓ ${c.ok}</div>`;
+ if(c.chips)o+=`<div class="chips" ${d()}>${c.chips.map(x=>`<span>${x}</span>`).join('')}</div>`;
+ if(c.btn)o+=`<div ${d()}><button id="cb">${c.btn[0]}</button></div>`;
+ card.innerHTML=`<div class="cd">${o}</div>`;
+ if(c.btn)$('#cb').onclick=e=>{e.stopPropagation();setApp(c.btn[1]);e.target.outerHTML='<span class="okb">✓ Proposta aplicada na visualização</span>'};
+}
+function draw(){
+ const s=S[i];stage.dataset.m=s.m;stage.classList.remove('burst');setCard();card.className=i%2?'L':'R';
+ $('#bar').style.width=(i+1)/S.length*100+'%';$('#prev').classList.toggle('off',i===0);$('#next').classList.toggle('off',i===0||i===S.length-1);
+ if(s.sec)$('#sec').textContent=s.sec;
+ if(s.m==='intro'||s.m==='end'){
+  let L=s.L;
+  intro.innerHTML=L.map((x,k)=>{const d=`style="animation-delay:${x[0]==='b'?.3+(k-1)*1.5+1:.3+k*1.5}s"`;return x[0]===''?`<div ${d}>${x[1]}</div>`:x[0]==='b'?`<div ${d}>${x[1]}</div>`:x[0]==='h1'?`<h1 ${d}>${x[1]}</h1>`:`<p class="${x[0]}" ${d}>${x[1]}</p>`}).join('');
+  const g=$('#go');if(g)g.onclick=e=>{e.stopPropagation();next()};const w=$('#site');if(w)w.onclick=e=>e.stopPropagation();
+  if(s.bg)['09h00 Confirmado','10h30 Cliente atrasado','Vaga disponível','Cancelamento'].forEach((t,k)=>{const e=document.createElement('div');e.className='fl';e.textContent=t;e.style.cssText=`${k%2?'right':'left'}:4%;top:${[8,16,80,88][k]}%;animation-delay:${-k*1.3}s`;intro.appendChild(e)});
+  if($('#rs'))$('#rs').onclick=e=>{e.stopPropagation();go(0)};$('#hint').style.display=i===S.length-1?'none':'';
+ }else if(s.m==='ph'){
+  if(prev==='intro'||prev==='end'){phone.classList.remove('enter');void phone.offsetWidth;phone.classList.add('enter')}
+  setApp(s.app);setCap(s.t,s.h);
+  later(()=>setCard(s.card,s.t),i===3?1500:350);
+  if(s.after)later(()=>setApp(s.after[1]),s.after[0]*.55);
+ }else if(s.m==='brain')brain();
+ else if(s.m==='sim')step();
+ prev=s.m;
+}
+function step(){
+ const x=S[i].steps[st];setApp(x.app);setCap(x.t,x.h);setCard(x.card);
+ if(st<S[i].steps.length-1)later(next,x.ms||3200);
+}
+function brain(){
+ setCap('Todas as ferramentas, uma inteligência.','Agora imagine tudo isso trabalhando junto.');setApp(A());
+ const M=['Analisando históricos…','Comparando durações…','Verificando clima e trânsito…','Identificando conflitos…','Encontrando oportunidades…'];
+ M.forEach((m,k)=>later(()=>{$('#status').textContent=m},500+k*1100));
+ later(()=>{setCap('Todas as ferramentas, uma inteligência.','Eu conecto informações sobre sua agenda, seus clientes, a duração dos serviços e as condições externas para encontrar padrões, antecipar riscos e identificar oportunidades.')},1500);
+ later(burst,6600);
+}
+function burst(){
+ T.forEach(clearTimeout);T=[];stage.classList.add('burst');
+ setCap('Informações que se transformam em decisões inteligentes.','Encontrei algumas coisas importantes na agenda da Patrícia. Vou mostrar para você.');
+ const P=[[4,14],[2,44],[5,70],[74,18],[76,50],[70,74]],N=['Conflito de horários','Atraso recorrente','Clima e trânsito','Vaga na lista de espera','Sugestão de otimização'];
+ $('#chips').innerHTML=N.map((n,k)=>`<span style="${k%2?'left':'right'}:calc(50% + var(--pw)/2 - 70px);top:${[2,18,36,54,72][k]}%;animation-delay:${k*.15}s">${n}</span>`).join('');
+ st=1;
+}
+function next(){
+ T.forEach(clearTimeout);T=[];const s=S[i];
+ if(s.m==='brain'&&st<1){burst();return}
+ if(s.m==='sim'&&st<s.steps.length-1){st++;step();return}
+ go(i+1);
+}
+function go(n){T.forEach(clearTimeout);T=[];i=Math.max(0,Math.min(S.length-1,n));st=0;if(i<S.length-1)$('#hint').style.display='';draw()}
+$('#prev').onclick=e=>{e.stopPropagation();go(i-1)};$('#next').onclick=e=>{e.stopPropagation();if(i<S.length-1)next()};
+let tx=0,ty=0,sw=0;
+stage.addEventListener('click',()=>{if(Date.now()-sw<400)return;if(i<S.length-1)next()});
+stage.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){sw=Date.now();if(dx<0){if(i<S.length-1)next()}else go(i-1)}},{passive:true});
+addEventListener('keydown',e=>{if(['ArrowRight',' ','Enter'].includes(e.key)&&i<S.length-1)next();if(e.key==='ArrowLeft')go(i-1)});
+/* cérebro */
+(function(){let o='',P=[];for(let k=0;k<44;k++){const a=Math.random()*6.28,r=Math.sqrt(Math.random());P.push([270+Math.cos(a)*r*82,200+Math.sin(a)*r*64])}
+const tools=['Agenda','Clientes','Histórico','Duração','Clima','Trânsito','Lista de espera','Lembretes'];
+tools.forEach((t,k)=>{const a=k/8*6.28-1.57,x=270+Math.cos(a)*205,y=200+Math.sin(a)*168;o+=`<line class="flow" x1="${x}" y1="${y}" x2="270" y2="200" stroke="${k%2?'#8b5cf6':'#ff2bd6'}" stroke-width="1.8"/><rect x="${x-52}" y="${y-15}" width="104" height="30" rx="15" fill="#1d0c3a" stroke="#ff2bd6" stroke-opacity=".7"/><text x="${x}" y="${y+5}" text-anchor="middle" fill="#f4eefe" font-size="14" font-weight="600" font-family="Plus Jakarta Sans,sans-serif">${t}</text>`});
+o+='<g class="core">';
+P.forEach((p,a)=>P.forEach((q,b)=>{if(b>a&&Math.hypot(p[0]-q[0],p[1]-q[1])<30)o+=`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="#ff2bd6" stroke-opacity=".55"/>`}));
+P.forEach(p=>o+=`<circle cx="${p[0]}" cy="${p[1]}" r="2.8" fill="#ffd3f6"/>`);o+='</g>';
+$('#bsvg').innerHTML=o})();
+/* partículas e circuitos */
+const cv=$('#cv'),cx=cv.getContext('2d');let pts=[],ps=[];
+function rs(){cv.width=innerWidth;cv.height=innerHeight;pts=Array.from({length:innerWidth<760?36:70},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.6+.4,v:Math.random()*.3+.05,c:Math.random()<.5?'255,43,214':'139,92,246'}));
+ const g=48;ps=[];for(let k=0;k<(innerWidth<760?12:20);k++){let x=Math.round(Math.random()*cv.width/g)*g,y=Math.round(Math.random()*cv.height/g)*g,q=[[x,y]],hz=Math.random()<.5,sg=[],L=0;
+ for(let s=0;s<4;s++){const l=(1+Math.floor(Math.random()*4))*g*(Math.random()<.5?-1:1);if(hz)x+=l;else y+=l;q.push([x,y]);hz=!hz}
+ for(let a=1;a<q.length;a++){const d=Math.abs(q[a][0]-q[a-1][0])+Math.abs(q[a][1]-q[a-1][1]);sg.push(d);L+=d}
+ ps.push({q,sg,L,t:Math.random(),sp:.0005+Math.random()*.001,c:k%2?'255,43,214':'139,92,246'})}}
+rs();addEventListener('resize',rs);
+function at(p){let d=p.t*p.L;for(let a=0;a<p.sg.length;a++){if(d<=p.sg[a]){const u=d/p.sg[a],A=p.q[a],B=p.q[a+1];return[A[0]+(B[0]-A[0])*u,A[1]+(B[1]-A[1])*u]}d-=p.sg[a]}return p.q[p.q.length-1]}
+/* Animação baseada em tempo: velocidade independente de 60/90/120 Hz. */
+let lastFrameTime=null;
+(function f(now){
+ const dt=lastFrameTime===null?16.6667:Math.min(Math.max(now-lastFrameTime,0),50);
+ lastFrameTime=now;
+ const frameFactor=dt/16.6667;
+ cx.clearRect(0,0,cv.width,cv.height);cx.shadowBlur=0;
+ ps.forEach(p=>{cx.strokeStyle=`rgba(${p.c},.3)`;cx.lineWidth=1.2;cx.beginPath();p.q.forEach((a,k)=>k?cx.lineTo(a[0],a[1]):cx.moveTo(a[0],a[1]));cx.stroke();
+  const e=p.q[p.q.length-1];cx.fillStyle=`rgba(${p.c},.8)`;cx.beginPath();cx.arc(e[0],e[1],3,0,6.28);cx.fill();
+  p.t=(p.t+p.sp*frameFactor)%1;const m=at(p);cx.shadowBlur=14;cx.shadowColor=`rgb(${p.c})`;cx.fillStyle='#fff';cx.beginPath();cx.arc(m[0],m[1],2.2,0,6.28);cx.fill();cx.shadowBlur=0});
+ pts.forEach(p=>{p.y-=p.v*.35*frameFactor;if(p.y<0)p.y=cv.height;cx.fillStyle=`rgba(${p.c},.75)`;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fill()});requestAnimationFrame(f)})();
+draw();
+</script>
+</body>
+</html>
